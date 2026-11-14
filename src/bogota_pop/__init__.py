@@ -1,3 +1,5 @@
 """Open, reproducible population estimates for Bogotá D.C."""
 
-__version__ = "0.0.1"
+from importlib.metadata import version
+
+__version__ = version("bogota-pop")  # single source of truth: pyproject.toml

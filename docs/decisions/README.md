@@ -14,5 +14,6 @@ ADRs are immutable once accepted. To change a decision, write a new ADR that sup
 | [0006](0006-public-granularity.md) | Public granularity: block and H3; lot level private | Accepted | 2026-11-14 |
 | [0007](0007-where-outputs-live.md) | Outputs on GitHub Releases, Zenodo DOI for majors | Accepted | 2026-11-14 |
 | [0008](0008-control-total.md) | Control total: DANE–SDP post-COVID projections | Accepted | 2026-11-14 |
+| [0009](0009-cli-framework.md) | CLI framework: Typer | Accepted | 2026-11-14 |
 
 New ADRs copy [template.md](template.md) and take the next number.

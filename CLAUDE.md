@@ -67,7 +67,7 @@ Update this block when the real commands differ.
 
 - Talk a decision through before writing code for it. If something isn't covered by the plan or an ADR, propose it and wait.
 - Stop after each step of a phase for review. Don't chain several steps in one go.
-- A new structural decision becomes a new ADR (`docs/decisions/ADR-00NN-short-title.md`: context, decision, consequences).
+- A new structural decision becomes a new ADR (`docs/decisions/NNNN-short-title.md`, copied from `docs/decisions/template.md`, and listed in `docs/decisions/README.md`).
 - When scope or order changes, update `docs/plan.md` in the same PR.
 - Prefer small PRs, one per task from the phase checklist.
 - Prose in docs: direct, specific, varied sentence length, no filler intros or recap endings.
