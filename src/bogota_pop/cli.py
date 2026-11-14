@@ -32,7 +32,12 @@ def _version_callback(value: bool) -> None:
 def main(
     version: Annotated[
         bool,
-        typer.Option("--version", callback=_version_callback, is_eager=True, help="Show the version and exit."),
+        typer.Option(
+            "--version",
+            callback=_version_callback,
+            is_eager=True,
+            help="Show the version and exit.",
+        ),
     ] = False,
 ) -> None:
     """Open, reproducible population estimates for Bogotá D.C."""

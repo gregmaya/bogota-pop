@@ -36,3 +36,37 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/bogota_pop"]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.7.0",
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes: unused imports, undefined names
+    "I",   # import sorting
+    "B",   # bugbear: likely bugs (mutable defaults, etc.)
+    "UP",  # pyupgrade: modern syntax for py312
+    "SIM", # simplifications
+    "RUF", # ruff-specific checks
+]
+
+[tool.ruff.lint.per-file-ignores]
+"notebooks/*" = ["E402"] # imports after markdown/setup cells
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+markers = [
+    "integration: end-to-end run on the one-UPZ fixture (tests/fixtures/)",
+]

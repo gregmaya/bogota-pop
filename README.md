@@ -12,6 +12,8 @@ Requires [uv](https://docs.astral.sh/uv/).
 git clone https://github.com/gregmaya/bogota-pop.git
 cd bogota-pop
 uv sync
+uv run pre-commit install   # once per clone
+uv run bogota-pop --help
 ```
 
 Code: MIT ([LICENSE](LICENSE)). Data outputs: CC BY 4.0 (ADR-0002).

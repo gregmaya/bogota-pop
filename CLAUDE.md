@@ -24,6 +24,7 @@ CNPV 2018 population per block (DANE MGN integrado) is distributed to cadastral 
 
 ```bash
 uv sync                       # create/refresh .venv from uv.lock
+uv run pre-commit install     # once per clone: ruff + file checks run on every commit
 uv run bogota-pop ingest      # download sources, verify checksums, write data/raw and data/interim
 uv run bogota-pop model       # run the population estimate
 uv run bogota-pop validate    # back-cast and survey checks, write the scorecard
