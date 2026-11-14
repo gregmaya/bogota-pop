@@ -1,0 +1,67 @@
+# ── Project data (never committed; see ADR-0007) ──────────────────────────────
+# Raw downloads, intermediate and processed outputs are rebuilt by the pipeline.
+# The manifest (URL, vigencia, download date, SHA-256) lives in config/, not here.
+data/*
+!data/.gitkeep
+*.parquet
+*.geoparquet
+*.gpkg
+*.gpkg-journal
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.pmtiles
+*.duckdb
+*.duckdb.wal
+*.zip
+
+# Small, committed test fixtures (one-UPZ sample) are the exception.
+!tests/fixtures/**
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+
+# Environments (uv creates .venv/; uv.lock IS committed)
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.hypothesis/
+
+# Notebooks (exploration only; outputs can contain lot-level data, ADR-0006)
+.ipynb_checkpoints/
+
+# Pipeline / docs build artefacts
+.snakemake/
+site/
+_site/
+.quarto/
+
+# ── Editors and OS ────────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp

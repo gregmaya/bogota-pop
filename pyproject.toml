@@ -1,0 +1,34 @@
+[project]
+name = "bogota-pop"
+version = "0.0.1"
+description = "Open, reproducible population estimates for every cadastral lot in Bogotá, published at block and H3 level."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Greg Maya" }]
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+dependencies = [
+    "geopandas>=1.0",
+    "shapely>=2.0",
+    "pyogrio>=0.10",   # wheels bundle GDAL
+    "pyproj>=3.7",     # wheels bundle PROJ (EPSG:9377)
+    "pyarrow>=18",     # GeoParquet
+    "duckdb>=2.0",     # 2.0 API; spatial extension installed at runtime
+    "tobler>=0.12",
+    "h3>=4.1",
+    "pyyaml>=6.0",
+]
+
+[project.urls]
+Repository = "https://github.com/gregmaya/bogota-pop"
+
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bogota_pop"]
