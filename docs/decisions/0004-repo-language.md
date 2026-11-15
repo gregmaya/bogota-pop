@@ -1,6 +1,6 @@
 # ADR-0004: Repo language: English code and issues; bilingual README and methods
 
-- **Status:** Accepted
+- **Status:** Accepted; partly superseded by [ADR-0011](0011-bilingual-github.md) (issues and PRs are now bilingual)
 - **Date:** 2026-11-14
 - **Plan reference:** D4 in [docs/plan.md](../plan.md)
 

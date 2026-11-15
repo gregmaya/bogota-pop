@@ -1,35 +1,41 @@
-name: Data source change
-description: A source changed URL, format, schema, licence or vigencia, or a new source is proposed.
+name: Data source change · Cambio en una fuente de datos
+description: A source changed URL, format, fields, licence or vigencia, or a new source is proposed. · Una fuente cambió de URL, formato, campos, licencia o vigencia, o se propone una fuente nueva.
+title: "English title · Título en español"
 labels: ["data-source"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Write in English and Spanish, and spell out acronyms the first time ([glossary](https://github.com/gregmaya/bogota-pop/blob/main/docs/glossary.md)).
+        Escribe en inglés y español, y escribe las siglas completas la primera vez ([glosario](https://github.com/gregmaya/bogota-pop/blob/main/docs/glossary.md)).
   - type: input
     id: source
     attributes:
-      label: Source
-      description: Name as in config/sources.yaml (e.g. UAECD Lote, DANE MGN integrado).
+      label: Source · Fuente
+      description: ID as in config/sources.yaml (e.g. uaecd_lote). · ID como en config/sources.yaml (p. ej. uaecd_lote).
     validations:
       required: true
   - type: dropdown
     id: kind
     attributes:
-      label: Kind of change
+      label: Kind of change · Tipo de cambio
       options:
-        - URL moved or download fails
-        - Schema or field names changed
-        - New vigencia or release available
-        - Licence or terms changed
-        - New source proposed
+        - URL moved or download fails · La URL cambió o la descarga falla
+        - Fields or format changed · Cambiaron los campos o el formato
+        - New vigencia or release available · Hay una nueva vigencia o publicación
+        - Licence or terms changed · Cambió la licencia o los términos de uso
+        - New source proposed · Se propone una fuente nueva
     validations:
       required: true
   - type: textarea
     id: details
     attributes:
-      label: Details
-      description: Old vs new (URL, field names, checksum, row counts), with links.
+      label: Details · Detalles
+      description: Old vs new (URL, field names, checksum, row counts), with links. · Antes y después (URL, nombres de campos, checksum, número de filas), con enlaces.
     validations:
       required: true
   - type: textarea
     id: impact
     attributes:
-      label: Affected stages
-      description: Which of ingest / harmonise / model / validate / publish this touches, if known.
+      label: Affected stages · Etapas afectadas
+      description: Which of ingest / harmonise / model / validate / publish this touches, if known. · Cuáles de ingest / harmonise / model / validate / publish afecta, si se sabe.

@@ -1,23 +1,37 @@
-name: Task
-description: A task from a phase checklist in docs/plan.md.
+name: Task · Tarea
+description: Work from a phase in docs/plan.md. · Trabajo de una fase de docs/plan.md.
+title: "English title · Título en español"
 labels: ["task"]
 body:
-  - type: input
-    id: phase
+  - type: markdown
     attributes:
-      label: Phase
-      description: e.g. Phase 1 — Data acquisition and inventory
+      value: |
+        Write in English and Spanish, and spell out acronyms the first time in each language ([glossary](https://github.com/gregmaya/bogota-pop/blob/main/docs/glossary.md)). Assign the phase milestone.
+        Escribe en inglés y español, y escribe las siglas completas la primera vez en cada idioma ([glosario](https://github.com/gregmaya/bogota-pop/blob/main/docs/glossary.md)). Asigna el milestone de la fase.
+  - type: textarea
+    id: what
+    attributes:
+      label: What and why · Qué y por qué
+      value: |
+        **EN:**
+
+        **ES:**
     validations:
       required: true
   - type: textarea
-    id: task
+    id: steps
     attributes:
-      label: Task
-      description: The checklist item, copied from docs/plan.md.
+      label: Steps · Pasos
+      description: One checklist line per step, in both languages. · Una línea por paso, en ambos idiomas.
+      value: |
+        - [ ] English · Español
     validations:
       required: true
   - type: textarea
     id: done
     attributes:
-      label: Done when
-      description: How we know it is finished (tests, outputs, docs).
+      label: Done when · Listo cuando
+      value: |
+        **EN:**
+
+        **ES:**
