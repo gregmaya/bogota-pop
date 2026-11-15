@@ -1,0 +1,82 @@
+# The pipeline DAG (ADR-0010). Run from the repo root:
+#
+#   uv run snakemake -s pipeline/Snakefile -c1                      # build everything
+#   uv run snakemake -s pipeline/Snakefile -n                       # dry run: what would run, and why
+#   uv run snakemake -s pipeline/Snakefile -c1 --config vigencia=2027
+#
+# Each rule calls one `bogota-pop` stage; the CLI stays the single entry point.
+# Output is shown in the terminal and kept in data/logs/{vigencia}/<stage>.log.
+# Snakemake runs shell commands with `set -euo pipefail`, so a failing stage
+# still fails the pipeline even though its output is piped through tee.
+# Phase 0: stages are stubs, so each rule writes a marker file. Phase 1 onwards
+# replaces each marker with the stage's real outputs (GeoParquet, PMTiles, scorecard).
+
+from pathlib import Path
+
+VIGENCIA = str(config.get("vigencia", "2026"))
+
+
+def code(*stages):
+    """Source files of the given stages plus the CLI.
+
+    Listed as rule inputs so that editing a stage's code re-runs that stage and
+    everything downstream (Snakemake only watches the Snakefile's own commands).
+    """
+    files = ["src/bogota_pop/cli.py"]
+    for stage in stages:
+        files += sorted(str(f) for f in Path("src/bogota_pop", stage).rglob("*.py"))
+    return files
+
+
+rule all:
+    input:
+        f"data/processed/{VIGENCIA}/.publish.done",
+
+
+rule ingest:
+    input:
+        "config/sources.yaml",
+        code("ingest", "harmonise"),
+    output:
+        touch("data/interim/{vigencia}/.ingest.done"),
+    log:
+        "data/logs/{vigencia}/ingest.log",
+    shell:
+        "bogota-pop ingest 2>&1 | tee {log}"
+
+
+rule model:
+    input:
+        "data/interim/{vigencia}/.ingest.done",
+        code("model"),
+    output:
+        touch("data/processed/{vigencia}/.model.done"),
+    log:
+        "data/logs/{vigencia}/model.log",
+    shell:
+        "bogota-pop model 2>&1 | tee {log}"
+
+
+rule validate:
+    input:
+        "data/processed/{vigencia}/.model.done",
+        code("validate"),
+    output:
+        touch("data/processed/{vigencia}/.validate.done"),
+    log:
+        "data/logs/{vigencia}/validate.log",
+    shell:
+        "bogota-pop validate 2>&1 | tee {log}"
+
+
+rule publish:
+    input:
+        "data/processed/{vigencia}/.model.done",
+        "data/processed/{vigencia}/.validate.done",
+        code("publish"),
+    output:
+        touch("data/processed/{vigencia}/.publish.done"),
+    log:
+        "data/logs/{vigencia}/publish.log",
+    shell:
+        "bogota-pop publish 2>&1 | tee {log}"

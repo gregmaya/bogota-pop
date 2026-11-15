@@ -17,7 +17,7 @@ CNPV 2018 population per block (DANE MGN integrado) is distributed to cadastral 
 
 - Python only (ADR-0003). Environment managed with **uv**: `pyproject.toml` + `uv.lock`, both committed. Add dependencies with `uv add`, never with plain `pip install`. GDAL comes bundled in the pyogrio/shapely wheels; don't add a system GDAL dependency without asking.
 - geopandas, shapely 2, pyogrio, DuckDB with the spatial extension, tobler, h3-py.
-- Orchestration: Snakemake or Make (decide in Phase 0, then update this line).
+- Orchestration: **Snakemake** (ADR-0010). The DAG is `pipeline/Snakefile`; each rule calls one `bogota-pop` command and lists its stage's source files as inputs. Logic goes in `src/`, never in the Snakefile.
 - Quality: ruff, pytest, pre-commit, GitHub Actions.
 
 ## Commands
@@ -29,6 +29,8 @@ uv run bogota-pop ingest      # download sources, verify checksums, write data/r
 uv run bogota-pop model       # run the population estimate
 uv run bogota-pop validate    # back-cast and survey checks, write the scorecard
 uv run bogota-pop publish     # aggregate to block/H3, apply privacy rules, write GeoParquet + PMTiles
+uv run snakemake -s pipeline/Snakefile -c1   # run the whole pipeline; re-runs only what changed
+uv run snakemake -s pipeline/Snakefile -n    # dry run: what would run, and why
 uv run pytest                 # tests; the integration test runs on a single UPZ sample
 uv run ruff check . && uv run ruff format .
 ```

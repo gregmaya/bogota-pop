@@ -69,7 +69,7 @@ bogota-pop/
 │   ├── model/                # dasymetric (MVP), housing-unit (v2), scenarios
 │   ├── validate/             # back-cast, EM 2025, Movilidad 2023
 │   └── publish/              # aggregation to block/H3, privacy rules
-├── pipeline/                 # Snakemake or a Makefile: the DAG
+├── pipeline/                 # Snakefile: the DAG (ADR-0010)
 ├── notebooks/                # exploration only; never a pipeline step
 ├── tests/                    # unit + one-UPZ integration test
 ├── docs/
@@ -85,14 +85,14 @@ bogota-pop/
 | Analytics | DuckDB with the spatial extension | Handles \~3 M predios against tens of thousands of blocks on a laptop |
 | Areal / dasymetric | tobler (PySAL) | Reference implementation to compare against our own weights |
 | Grid output | h3-py | Resolution 9 (\~0.1 km²) and 10 to decide in Phase 6 |
-| Orchestration | Snakemake or Make | Re-runs only stages whose inputs changed |
+| Orchestration | Snakemake (ADR-0010) | Re-runs only stages whose inputs changed |
 | Quality | ruff, pytest, pre-commit, GitHub Actions | CI on one UPZ sample |
 | Docs | MkDocs Material or Quarto | Quarto if methods pages should embed live maps and figures |
 | CRS | MAGNA-SIRGAS Origen Nacional (EPSG:9377) | DANE and UAECD both publish in or convert cleanly to it |
 
 ## Phase 0: Bootstrap (about 1 week, in VS Code)
 
-Goal: an empty but working repo where `make all` (or `snakemake`) runs, tests pass and CI is green.
+Goal: an empty but working repo where `snakemake` runs, tests pass and CI is green.
 
 - [x] Close D1–D8 and write them as ADR-0001 to ADR-0008
 - [x] Create the public repo with licence files, `CITATION.cff`, `.gitignore` for `data/`, issue and PR templates
