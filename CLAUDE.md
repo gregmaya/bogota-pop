@@ -63,7 +63,7 @@ Update this block when the real commands differ.
 
 - Code, comments, commit messages and ADRs in English. Everything read on GitHub (issues, PRs, milestones, labels, release notes) in English **and** Spanish, titles as `English · Español` (ADR-0011). README and methods pages bilingual (`README.md`, `README.es.md`).
 - Spell out every acronym the first time it appears in an issue, PR or release note, with the short form in brackets. Expansions come from `docs/glossary.md`; never guess one. A new acronym means a new glossary row.
-- Keep original Spanish source field names where they come from (`STP27_PERS`, `DATO_ANM`, `CODMANPRE`). Map them to English snake_case names in one place in `harmonise/`, documented in the data dictionary.
+- Data stays in Spanish. Source field names are kept exactly as published at every stage (`STP27_PERS`, `DATO_ANM`, `CODMANPRE`), never translated. Columns the model creates are named in Spanish snake_case (`peso_residencial`, `poblacion_estimada`). All fields are documented in the data dictionary. Python identifiers, code comments and docstrings stay in English.
 - Type hints on public functions. Short docstrings that say what a function expects and returns, including CRS and units.
 - Each pipeline stage writes, next to its output, a PMTiles file for the viewer's "Etapas" mode. Block and H3 stages may be published as dev pre-releases (`dev-YYYY-MM-DD`). Lot-level stage tiles stay in `data/processed/`.
 - Releases are tagged by cadastral vigencia (`v2026.1`). Every release gets a `CHANGELOG.md` entry covering data, method and results.

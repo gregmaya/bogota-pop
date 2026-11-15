@@ -17,5 +17,6 @@ ADRs are immutable once accepted. To change a decision, write a new ADR that sup
 | [0009](0009-cli-framework.md) | CLI framework: Typer | Accepted | 2026-11-14 |
 | [0010](0010-orchestration.md) | Orchestration: Snakemake | Accepted | 2026-11-14 |
 | [0011](0011-bilingual-github.md) | Issues, PRs, milestones and releases in English and Spanish | Accepted | 2026-11-14 |
+| [0012](0012-ingest-provenance.md) | Ingest provenance: checksums and manifest | Accepted | 2026-11-15 |
 
 New ADRs copy [template.md](template.md) and take the next number.
