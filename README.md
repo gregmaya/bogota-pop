@@ -2,7 +2,7 @@
 
 Open, reproducible population estimates for every cadastral lot in Bogotá D.C., published at block (manzana) and H3 level.
 
-> Work in progress (Phase 0). See [docs/plan.md](docs/plan.md), [docs/decisions/](docs/decisions/) and the [glossary · glosario](docs/glossary.md).
+> Work in progress (Phase 1: data acquisition). See [docs/plan.md](docs/plan.md), [docs/decisions/](docs/decisions/) and the [glossary · glosario](docs/glossary.md).
 
 ## Development setup
 

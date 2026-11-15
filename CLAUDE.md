@@ -6,7 +6,8 @@ The full plan lives in `docs/plan.md`. Decisions live in `docs/decisions/` as AD
 
 ## Current status
 
-- Phase: **0, Bootstrap** (update this line when a phase closes)
+- Phase: **1, Data acquisition** (update this line when a phase closes). Phase 0 closed 2026-11-15, tagged `v0.0.1`.
+- Work is tracked in GitHub milestones (one per phase) and issues #1–#11; each issue's checklist mirrors the phase tasks in `docs/plan.md`. Tick both when a step is done.
 - Next release: `v0.1` (MVP census-to-lot model, Phase 2)
 
 ## Method in one paragraph

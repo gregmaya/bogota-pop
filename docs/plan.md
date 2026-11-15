@@ -100,8 +100,8 @@ Goal: an empty but working repo where `snakemake` runs, tests pass and CI is gre
 - [x] Scaffold `src/bogota_pop/` as an installable package with a CLI entry point (`bogota-pop ingest`, `model`, `validate`, `publish`)
 - [x] Set up ruff, pytest, pre-commit and a GitHub Actions workflow
 - [x] Write `config/sources.yaml` with every dataset from the research inventory, even ones not used until later
-- [ ] Open GitHub milestones for Phases 1–6, each with one or two issues whose checklists cover the tasks below (English and Spanish, ADR-0011)
-- [ ] Tag `v0.0.1` when the exit gate passes (a git tag only, no GitHub Release: Releases are for data versions, ADR-0007)
+- [x] Open GitHub milestones for Phases 1–6, each with one or two issues whose checklists cover the tasks below (English and Spanish, ADR-0011)
+- [x] Tag `v0.0.1` when the exit gate passes (a git tag only, no GitHub Release: Releases are for data versions, ADR-0007)
 - [x] Copy this plan into `docs/plan.md`
 
 **Exit gate:** CI green on an empty pipeline; a stranger can clone and run `bogota-pop --help` in under 10 minutes.
