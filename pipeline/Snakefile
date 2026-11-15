@@ -8,10 +8,12 @@
 # Output is shown in the terminal and kept in data/logs/{vigencia}/<stage>.log.
 # Snakemake runs shell commands with `set -euo pipefail`, so a failing stage
 # still fails the pipeline even though its output is piped through tee.
-# Phase 0: stages are stubs, so each rule writes a marker file. Phase 1 onwards
-# replaces each marker with the stage's real outputs (GeoParquet, PMTiles, scorecard).
+# Ingest writes one GeoParquet per source. The later stages are still stubs that
+# write marker files; each phase replaces its marker with real outputs.
 
 from pathlib import Path
+
+import yaml
 
 VIGENCIA = str(config.get("vigencia", "2026"))
 
@@ -33,16 +35,43 @@ rule all:
         f"data/processed/{VIGENCIA}/.publish.done",
 
 
+# ── Ingest (ADR-0012) ─────────────────────────────────────────────────────────
+# One job per source, so a change to one source re-runs only that source.
+# A source joins the DAG once its download_url is filled in sources.yaml.
+# Each source keeps its own vigencia (MGN is 2018 whatever the run's vigencia).
+
+SOURCES = yaml.safe_load(Path("config/sources.yaml").read_text(encoding="utf-8"))["sources"]
+READY = {sid: s for sid, s in SOURCES.items() if s["download_url"]}
+
+
+def interim(source_id):
+    return f"data/interim/{source_id}/{READY[source_id]['vigencia']}.parquet"
+
+
+wildcard_constraints:
+    source_id="[a-z][a-z0-9_]*",
+
+
+rule ingest_source:
+    input:
+        code("ingest"),
+    output:
+        "data/interim/{source_id}/{source_vigencia}.parquet",
+    params:
+        # Re-run when this source's entry in sources.yaml changes, and only then.
+        entry=lambda w: SOURCES[w.source_id],
+    log:
+        "data/logs/ingest/{source_id}-{source_vigencia}.log",
+    shell:
+        "bogota-pop ingest {wildcards.source_id} 2>&1 | tee {log}"
+
+
 rule ingest:
     input:
-        "config/sources.yaml",
-        code("ingest", "harmonise"),
+        [interim(sid) for sid in READY],
+        code("harmonise"),
     output:
         touch("data/interim/{vigencia}/.ingest.done"),
-    log:
-        "data/logs/{vigencia}/ingest.log",
-    shell:
-        "bogota-pop ingest 2>&1 | tee {log}"
 
 
 rule model:
