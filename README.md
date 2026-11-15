@@ -16,4 +16,4 @@ uv run pre-commit install   # once per clone
 uv run bogota-pop --help
 ```
 
-Code: MIT ([LICENSE](LICENSE)). Data outputs: CC BY 4.0 (ADR-0002).
+Code: MIT ([LICENSE](LICENSE)). Data outputs: CC BY 4.0 ([DATA_LICENSE](DATA_LICENSE)). How to cite: [CITATION.cff](CITATION.cff).

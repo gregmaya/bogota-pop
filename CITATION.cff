@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software or its data outputs, please cite it as below.
+  For data, cite the specific release you used (each major release has a Zenodo DOI).
+type: software
+title: "bogota-pop: open population estimates for Bogotá D.C."
+abstract: >-
+  An open, reproducible model that estimates resident population for every
+  cadastral lot in Bogotá D.C., refreshed once per cadastral vigencia and
+  published at block (manzana) and H3 level. It combines the CNPV 2018 census,
+  UAECD cadastre and DANE–SDP post-COVID population projections. Code is MIT
+  licensed; data outputs are CC BY 4.0.
+authors:
+  - family-names: Maya
+    given-names: Gregorio
+    orcid: "https://orcid.org/0009-0002-8285-7253"
+version: 0.0.1
+license: MIT
+repository-code: "https://github.com/gregmaya/bogota-pop"
+keywords:
+  - population
+  - dasymetric mapping
+  - areal interpolation
+  - census
+  - cadastre
+  - Bogotá
+  - Colombia
+  - H3

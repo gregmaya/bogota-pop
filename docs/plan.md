@@ -1,6 +1,6 @@
 # Bogotá Population Model: Project Plan
 
-Nov 14, 2026 · @Greg
+Nov 14, 2026 · Gregorio Maya
 
 ## Purpose and scope
 
@@ -94,14 +94,14 @@ bogota-pop/
 
 Goal: an empty but working repo where `make all` (or `snakemake`) runs, tests pass and CI is green.
 
-- [ ] Close D1–D8 and write them as ADR-0001 to ADR-0008
-- [ ] Create the public repo with licence files, `CITATION.cff`, `.gitignore` for `data/`, issue and PR templates
-- [ ] Lock the environment (pixi or uv) and confirm GDAL, PROJ and DuckDB spatial install on macOS and in CI
-- [ ] Scaffold `src/bogota_pop/` as an installable package with a CLI entry point (`bogota-pop ingest`, `model`, `validate`, `publish`)
-- [ ] Set up ruff, pytest, pre-commit and a GitHub Actions workflow
+- [x] Close D1–D8 and write them as ADR-0001 to ADR-0008
+- [x] Create the public repo with licence files, `CITATION.cff`, `.gitignore` for `data/`, issue and PR templates
+- [x] Lock the environment (pixi or uv) and confirm GDAL, PROJ and DuckDB spatial install on macOS and in CI
+- [x] Scaffold `src/bogota_pop/` as an installable package with a CLI entry point (`bogota-pop ingest`, `model`, `validate`, `publish`)
+- [x] Set up ruff, pytest, pre-commit and a GitHub Actions workflow
 - [ ] Write `config/sources.yaml` with every dataset from the research inventory, even ones not used until later
 - [ ] Open GitHub milestones for Phases 1–6 and one issue per task below
-- [ ] Copy this plan into `docs/plan.md`
+- [x] Copy this plan into `docs/plan.md`
 
 **Exit gate:** CI green on an empty pipeline; a stranger can clone and run `bogota-pop --help` in under 10 minutes.
 

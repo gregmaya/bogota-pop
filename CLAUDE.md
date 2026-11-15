@@ -64,7 +64,7 @@ Update this block when the real commands differ.
 - Each pipeline stage writes, next to its output, a PMTiles file for the viewer's "Etapas" mode. Block and H3 stages may be published as dev pre-releases (`dev-YYYY-MM-DD`). Lot-level stage tiles stay in `data/processed/`.
 - Releases are tagged by cadastral vigencia (`v2026.1`). Every release gets a `CHANGELOG.md` entry covering data, method and results.
 
-## How to work with me (Greg)
+## How to work with me (Gregorio)
 
 - Talk a decision through before writing code for it. If something isn't covered by the plan or an ADR, propose it and wait.
 - Stop after each step of a phase for review. Don't chain several steps in one go.

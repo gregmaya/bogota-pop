@@ -1,0 +1,35 @@
+name: Data source change
+description: A source changed URL, format, schema, licence or vigencia, or a new source is proposed.
+labels: ["data-source"]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Name as in config/sources.yaml (e.g. UAECD Lote, DANE MGN integrado).
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of change
+      options:
+        - URL moved or download fails
+        - Schema or field names changed
+        - New vigencia or release available
+        - Licence or terms changed
+        - New source proposed
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Old vs new (URL, field names, checksum, row counts), with links.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Affected stages
+      description: Which of ingest / harmonise / model / validate / publish this touches, if known.

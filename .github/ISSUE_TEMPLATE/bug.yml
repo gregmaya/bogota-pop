@@ -1,0 +1,28 @@
+name: Bug
+description: Something in the pipeline or CLI fails or gives a wrong result.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Command you ran, what you expected, what you got.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error output
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `uv run bogota-pop --version` and the vigencia, if relevant.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: I have not pasted lot-level data (lot IDs, per-lot estimates) in this issue (ADR-0006).
+          required: true
