@@ -1,0 +1,332 @@
+# Every dataset the project uses or plans to use (docs/plan.md, Phase 1 table).
+#
+# A new source is added here first, before any ingest code (CLAUDE.md).
+# Unknown values stay null with a TODO: no guessed URLs, licences or formats.
+#
+# Fields
+#   title         Human-readable name
+#   publisher     Who publishes it
+#   priority      core | v2 | validation | comparison | scenarios
+#   first_used    First phase that needs it (phase_1 … phase_6)
+#   used_for      What the model uses it for
+#   landing_page  Official page describing the dataset
+#   download_url  Direct file link (filled in Phase 1)
+#   format        e.g. GeoPackage, Shapefile, CSV, GeoTIFF
+#   vigencia      Reference year or release of the data
+#   licence       Terms of use, verified at the source (Phase 1)
+#   access        public | request (derecho de petición) | restricted; null = not yet known
+#   sha256        Expected checksum, pinned after the first verified download.
+#                 A later mismatch fails ingest loudly (risk: sources change between vigencias).
+#                 What was actually downloaded each run is recorded in manifest.json.
+#   checks        "Check on arrival" items from the plan
+
+schema_version: 1
+
+sources:
+  # ── Core ────────────────────────────────────────────────────────────────────
+
+  dane_mgn_cnpv2018_manzana:
+    title: DANE MGN integrado CNPV 2018, manzana layer
+    publisher: DANE
+    priority: core
+    first_used: phase_1
+    used_for: 2018 population per block (STP27_PERS), dwellings, anonymised flag (DATO_ANM)
+    landing_page: https://geoportal.dane.gov.co/descargas/mgn-integrado/
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: "2018"
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Count anonymised blocks (DATO_ANM)
+      - Total vs 7,181,459 censused
+
+  uaecd_lote:
+    title: UAECD Lote (cadastral lots)
+    publisher: UAECD
+    priority: core
+    first_used: phase_1
+    used_for: Lot geometry and codes; the unit the model estimates
+    landing_page: null # TODO(phase_1): Datos Abiertos Bogotá page
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: "2026" # 2018 also needed for the back-cast; confirm availability in Phase 1
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Vigencia date
+      - PH vs NPH counts
+
+  uaecd_construccion:
+    title: UAECD Construcción (buildings)
+    publisher: UAECD
+    priority: core
+    first_used: phase_1
+    used_for: Floors and built area per lot (≤3 vs ≥4 floor classes)
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: "2026" # 2018 also needed for the back-cast
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Vigencia date
+
+  uaecd_manzana:
+    title: UAECD Manzana (cadastral blocks)
+    publisher: UAECD
+    priority: core
+    first_used: phase_1
+    used_for: Cadastral blocks, matched to MGN blocks by geometry (CLAUDE.md rule 7)
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: "2026" # 2018 also needed for the back-cast
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Vigencia date
+
+  uaecd_uso:
+    title: UAECD Uso (land use per predio)
+    publisher: UAECD
+    priority: core
+    first_used: phase_1
+    used_for: Residential built area per lot; residential predios (units) in PH lots
+    landing_page: https://datosabiertos.bogota.gov.co/dataset/uso
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: "2026" # 2018 also needed for the back-cast
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Vigencia date
+      - Share of lots with residential use
+
+  dane_sdp_proyecciones_poblacion:
+    title: DANE–SDP population projections and back-projections 2005–2035, by UPZ/UPL
+    publisher: DANE–SDP
+    priority: core
+    first_used: phase_1
+    used_for: Annual control totals (ADR-0008)
+    landing_page: https://datosabiertos.bogota.gov.co/dataset/proyecciones-y-retroproyecciones-de-poblacion-2005-2035
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: 2025 release (post-COVID)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - UPZ sum equals city total
+      - 2024 ≈ 7,929,539
+
+  sdp_upz:
+    title: UPZ boundaries
+    publisher: SDP
+    priority: core
+    first_used: phase_1
+    used_for: Control geography for raking to projections
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: null # TODO(phase_1)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Topology
+      - Coverage of all blocks
+
+  sdp_upl:
+    title: UPL boundaries
+    publisher: SDP
+    priority: core
+    first_used: phase_1
+    used_for: Control geography for raking to projections
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: null # TODO(phase_1)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Topology
+      - Coverage of all blocks
+
+  # ── v2 ──────────────────────────────────────────────────────────────────────
+
+  # The plan links two licence datasets. Both are listed until Phase 1 compares
+  # what each covers (geometry, lot codes, completion dates) and picks one or both.
+  sdp_licencias_capa_geografica:
+    title: SDP licencias, capa geográfica
+    publisher: SDP
+    priority: v2
+    first_used: phase_3
+    used_for: New units since 2018 (provisional units for lots with completed licences)
+    landing_page: https://datosabiertos.bogota.gov.co/dataset/licencia-bogota-d-c
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: null # TODO(phase_1)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Join rate to lot codes
+      - Compare coverage with curadurias_licencias_ejecutoriadas
+
+  curadurias_licencias_ejecutoriadas:
+    title: Licencias ejecutoriadas, curadurías urbanas de Bogotá
+    publisher: null # TODO(phase_1): confirm publisher on the dataset page
+    priority: v2
+    first_used: phase_3
+    used_for: New units since 2018 (candidate alternative or complement to the SDP layer)
+    landing_page: https://datosabiertos.bogota.gov.co/dataset/licencias-ejecutoriadas-curadurias-bogota
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: null # TODO(phase_1)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Join rate to lot codes
+      - Compare coverage with sdp_licencias_capa_geografica
+
+  dane_sdp_proyecciones_hogares_viviendas:
+    title: DANE–SDP projections of households and dwellings 2018–2035
+    publisher: DANE–SDP
+    priority: v2
+    first_used: phase_3
+    used_for: Household size trend (h)
+    landing_page: https://datosabiertos.bogota.gov.co/en/dataset/proyecciones-de-hogares-y-viviendas-2018-2035
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: null # TODO(phase_1)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Matches population projection base
+
+  # ── Validation ──────────────────────────────────────────────────────────────
+
+  encuesta_multiproposito_2025:
+    title: Encuesta Multipropósito 2025, microdata
+    publisher: null # TODO(phase_1)
+    priority: validation
+    first_used: phase_4
+    used_for: Independent population and households by UPL / UTIEM
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: "2025"
+    licence: null # TODO(phase_1)
+    access: null # TODO(phase_1)
+    sha256: null
+    checks:
+      - Weights and UPL codes
+
+  encuesta_movilidad_2023:
+    title: Encuesta de Movilidad 2023, with ZAT shapefile
+    publisher: null # TODO(phase_1)
+    priority: validation
+    first_used: phase_4
+    used_for: Population by ZAT (compare shares, not counts)
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: "2023"
+    licence: null # TODO(phase_1)
+    access: null # TODO(phase_1)
+    sha256: null
+    checks:
+      - Total 7.5 M vs control, documented gap
+
+  dane_cnpv2018_microdatos_bogota:
+    title: CNPV 2018 microdata, Bogotá (11_Bogota.zip)
+    publisher: DANE
+    priority: validation
+    first_used: phase_2 # only if the licence allows; otherwise validation-only
+    used_for: Rebuild counts for anonymised blocks, if the licence allows
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: "2018"
+    licence: null # TODO(phase_1): terms for derived outputs (ADR-0002)
+    access: null # TODO(phase_1)
+    sha256: null
+    checks:
+      - Licence terms for derived outputs
+
+  # ── Comparison (benchmarks only) ────────────────────────────────────────────
+
+  worldpop:
+    title: WorldPop population grid, Colombia
+    publisher: WorldPop
+    priority: comparison
+    first_used: phase_4
+    used_for: Benchmark only
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: null # TODO(phase_1)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Same CRS and aggregation as our outputs
+
+  ghs_pop:
+    title: GHS-POP population grid
+    publisher: European Commission JRC
+    priority: comparison
+    first_used: phase_4
+    used_for: Benchmark only
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: null # TODO(phase_1)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Same CRS and aggregation as our outputs
+
+  meta_hrsl:
+    title: Meta High Resolution Settlement Layer (HRSL), Colombia
+    publisher: Meta
+    priority: comparison
+    first_used: phase_4
+    used_for: Benchmark only
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: null # TODO(phase_1)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Same CRS and aggregation as our outputs
+
+  # ── Scenarios ───────────────────────────────────────────────────────────────
+
+  pot_decreto_555:
+    title: POT Decreto 555, tratamientos and edificabilidad
+    publisher: SDP
+    priority: scenarios
+    first_used: phase_5
+    used_for: Lots under renovation or development treatments and their permitted edificabilidad (POT build-out scenario)
+    landing_page: null # TODO(phase_1)
+    download_url: null # TODO(phase_1)
+    format: null # TODO(phase_1)
+    vigencia: null # TODO(phase_1)
+    licence: null # TODO(phase_1)
+    access: public
+    sha256: null
+    checks:
+      - Layer names and attributes

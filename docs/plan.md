@@ -99,7 +99,7 @@ Goal: an empty but working repo where `make all` (or `snakemake`) runs, tests pa
 - [x] Lock the environment (pixi or uv) and confirm GDAL, PROJ and DuckDB spatial install on macOS and in CI
 - [x] Scaffold `src/bogota_pop/` as an installable package with a CLI entry point (`bogota-pop ingest`, `model`, `validate`, `publish`)
 - [x] Set up ruff, pytest, pre-commit and a GitHub Actions workflow
-- [ ] Write `config/sources.yaml` with every dataset from the research inventory, even ones not used until later
+- [x] Write `config/sources.yaml` with every dataset from the research inventory, even ones not used until later
 - [ ] Open GitHub milestones for Phases 1–6 and one issue per task below
 - [x] Copy this plan into `docs/plan.md`
 
@@ -127,6 +127,7 @@ Tasks:
 
 - [ ] One ingest module per source, with checksum and vigencia recorded in a `manifest.json`
 - [ ] Pin the cadastral vigencia (2026 base, plus 2018 for the back-cast) and confirm older vigencias are still downloadable
+- [ ] Compare the two licence datasets (SDP capa geográfica vs curadurías' licencias ejecutoriadas): what each covers, join rate to lot codes, completion dates; keep one or both for Phase 3
 - [ ] Write a data profile page per source: fields used, row counts, known issues
 - [ ] Request any non-public data (older cadastral vigencias, if not online) through a formal derecho de petición early, since replies can take weeks
 
