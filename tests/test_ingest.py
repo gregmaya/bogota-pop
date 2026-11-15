@@ -212,6 +212,13 @@ def test_reads_inside_a_zip(tmp_path: Path, gpkg: Path) -> None:
     assert gpd.read_parquet(out).crs.to_epsg() == 9377
 
 
+def test_where_keeps_only_matching_rows(tmp_path: Path, gpkg: Path) -> None:
+    out = tmp_path / "out.parquet"
+    stats = convert.to_geoparquet(gpkg, out, where="CODMANPRE = '002'")
+    assert stats["rows"] == 1
+    assert gpd.read_parquet(out)["CODMANPRE"].tolist() == ["002"]
+
+
 @pytest.mark.filterwarnings("ignore:'crs' was not provided")
 def test_missing_crs_fails(tmp_path: Path) -> None:
     src = tmp_path / "sin_crs.gpkg"

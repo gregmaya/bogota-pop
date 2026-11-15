@@ -40,8 +40,12 @@ rule all:
 # A source joins the DAG once its download_url is filled in sources.yaml.
 # Each source keeps its own vigencia (MGN is 2018 whatever the run's vigencia).
 
+# `--config offline=1` leaves every source out, so nothing is downloaded. CI uses
+# it: CI never downloads full datasets (CLAUDE.md rule 8); tests cover ingest.
+
 SOURCES = yaml.safe_load(Path("config/sources.yaml").read_text(encoding="utf-8"))["sources"]
-READY = {sid: s for sid, s in SOURCES.items() if s["download_url"]}
+OFFLINE = bool(int(config.get("offline", 0)))
+READY = {} if OFFLINE else {sid: s for sid, s in SOURCES.items() if s["download_url"]}
 
 
 def interim(source_id):

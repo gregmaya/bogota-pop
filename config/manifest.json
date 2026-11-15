@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "dane_mgn_cnpv2018_clase": {
+      "url": "https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN_ANM_MPIOCL_(Geopackage).zip",
+      "vigencia": "2018",
+      "downloaded_at": "2026-11-15T19:33:32Z",
+      "sha256": "b7523ca9ba1575be9f7e6bb43eaa99ee640bf6a58b1048d67ec47e1a0f695dbc",
+      "pinned": false,
+      "size_bytes": 110608698,
+      "raw_path": "data/raw/dane_mgn_cnpv2018_clase/2018/MGN_ANM_MPIOCL_(Geopackage).zip",
+      "interim_path": "data/interim/dane_mgn_cnpv2018_clase/2018.parquet",
+      "rows": 3,
+      "crs_in": "EPSG:4326",
+      "crs_out": "EPSG:9377",
+      "invalid_geometries": 0,
+      "suma_STP27_PERS": 7181469,
+      "suma_STPERSON_L": 31929,
+      "suma_STPERSON_S": 7149540,
+      "por_clase": {
+        "1": {
+          "STP27_PERS": 7166249,
+          "STPERSON_L": 31807,
+          "STPERSON_S": 7134442
+        },
+        "2": {
+          "STP27_PERS": 2525,
+          "STPERSON_L": 0,
+          "STPERSON_S": 2525
+        },
+        "3": {
+          "STP27_PERS": 12695,
+          "STPERSON_L": 122,
+          "STPERSON_S": 12573
+        }
+      }
+    },
+    "dane_mgn_cnpv2018_manzana": {
+      "url": "https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN_ANM_MANZANA_(Geopackage).zip",
+      "vigencia": "2018",
+      "downloaded_at": "2026-11-15T19:33:11Z",
+      "sha256": "a580e326f3eec0d6a3fe3a7f7f68d280a15cfc5c425e2f956126eddaca90be21",
+      "pinned": true,
+      "size_bytes": 324258956,
+      "raw_path": "data/raw/dane_mgn_cnpv2018_manzana/2018/MGN_ANM_MANZANA_(Geopackage).zip",
+      "interim_path": "data/interim/dane_mgn_cnpv2018_manzana/2018.parquet",
+      "rows": 43408,
+      "crs_in": "EPSG:4326",
+      "crs_out": "EPSG:9377",
+      "invalid_geometries": 0,
+      "suma_TP27_PERSO": 7136912,
+      "manzanas_sin_personas": 4951,
+      "manzanas_con_viviendas_sin_personas": 254
+    }
+  }
+}

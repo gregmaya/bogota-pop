@@ -64,6 +64,7 @@ def ingest(
     """Download sources, verify checksums, write data/raw and data/interim."""
     from bogota_pop.ingest.core import ingest_source
     from bogota_pop.ingest.errors import IngestError
+    from bogota_pop.ingest.registry import converter_for
     from bogota_pop.ingest.sources import get_source, load_sources
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -83,6 +84,7 @@ def ingest(
                 manifest_path=manifest_json,
                 strict=strict,
                 force=force,
+                convert=converter_for(source.id),
             )
     except IngestError as err:
         typer.echo(f"bogota-pop ingest: {err}", err=True)

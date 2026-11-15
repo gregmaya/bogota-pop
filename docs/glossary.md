@@ -23,6 +23,7 @@ Las filas marcadas **to confirm / por confirmar** son términos cuyo significado
 | **WorldPop** | Global gridded population estimates (University of Southampton); used as a benchmark only | Estimaciones mundiales de población en grilla (Universidad de Southampton); solo como referencia |
 | **GHS-POP** | Global Human Settlement Layer population grid (European Commission, Joint Research Centre); benchmark only | Grilla de población del Global Human Settlement Layer (Comisión Europea, JRC); solo como referencia |
 | **HRSL** | High Resolution Settlement Layer (Meta); benchmark only | High Resolution Settlement Layer (Meta); solo como referencia |
+| **INPEC** | Instituto Nacional Penitenciario y Carcelario: runs Colombia's prisons and publishes their population | Instituto Nacional Penitenciario y Carcelario: administra las cárceles y publica su población |
 | **IDOM / ODUR** | **To confirm.** A layer named in the plan's open research questions; what it is and its licence are Phase 1 questions | **Por confirmar.** Capa mencionada en las preguntas abiertas del plan; qué es y su licencia son preguntas de la Fase 1 |
 
 ## Geography · Geografía
@@ -31,6 +32,8 @@ Las filas marcadas **to confirm / por confirmar** son términos cuyo significado
 | --- | --- | --- |
 | **Manzana** | City block. Census blocks (MGN) and cadastral blocks (UAECD) are different geometries with different codes | Manzana. Las censales (MGN) y las catastrales (UAECD) tienen geometrías y códigos distintos |
 | **Sección** | Census section: a group of census blocks in the MGN | Sección censal: grupo de manzanas censales del MGN |
+| **Clase** | DANE's split of a municipality into cabecera (1), centro poblado (2) and rural disperso (3). People DANE cannot show in a block (LEA residents, anonymised blocks) are published at this level | División del DANE de cada municipio en cabecera (1), centro poblado (2) y rural disperso (3). Las personas que el DANE no puede mostrar por manzana (residentes de LEA, manzanas anonimizadas) se publican en este nivel |
+| **LEA** | Lugar Especial de Alojamiento: group quarters such as prisons, barracks, care homes, convents and student residences | Lugar Especial de Alojamiento: cárceles, cuarteles, hogares geriátricos, conventos, residencias estudiantiles |
 | **UPZ** | Unidad de Planeamiento Zonal: planning zone; the geography of the population projections | Unidad de Planeamiento Zonal; geografía de las proyecciones de población |
 | **UPL** | Unidad de Planeamiento Local: the planning units introduced by POT Decreto 555 | Unidad de Planeamiento Local: unidades introducidas por el POT, Decreto 555 |
 | **ZAT** | Zona de Análisis de Transporte: transport analysis zone of the Encuesta de Movilidad | Zona de Análisis de Transporte de la Encuesta de Movilidad |
@@ -58,8 +61,13 @@ Las filas marcadas **to confirm / por confirmar** son términos cuyo significado
 
 | Field · Campo | English | Español |
 | --- | --- | --- |
-| **STP27_PERS** | Persons counted per census block (MGN integrado) | Personas censadas por manzana (MGN integrado) |
-| **DATO_ANM** | Flag for census blocks whose counts DANE anonymised (blocks with 1–3 dwellings) | Marca de manzanas cuyos conteos el DANE anonimizó (manzanas de 1 a 3 viviendas) |
+| **TP27_PERSO** | Persons counted per census block (MGN integrado, manzana layer) | Personas censadas por manzana (MGN integrado, capa de manzanas) |
+| **STP27_PERS** | Persons counted, in DANE's department, municipality and clase layers only. Not in the block layer, despite what ADR-0004 and ADR-0006 say | Personas censadas, solo en las capas de departamento, municipio y clase. No está en la capa de manzanas, aunque lo digan los ADR-0004 y ADR-0006 |
+| **DATO_ANM** | Name of the geographic level a unit's census data is published at. It is `MANZANA` for every Bogotá block, so it does not mark anonymised blocks (ADR-0004 and ADR-0006 call it a flag; that is wrong). Anonymised blocks would show 0 persons; in Bogotá's cabecera no household people are missing from blocks (plan, Q2) | Nombre del nivel geográfico en que se publican los datos censales de la unidad. Es `MANZANA` en todas las manzanas de Bogotá, así que no marca las manzanas anonimizadas (los ADR-0004 y ADR-0006 lo llaman marca; es un error). Una manzana anonimizada aparecería con 0 personas; en la cabecera de Bogotá no falta ninguna persona de hogares en las manzanas (plan, Q2) |
+| **CLAS_CCDGO** | Clase code: 1 cabecera, 2 centro poblado, 3 rural disperso | Código de clase: 1 cabecera, 2 centro poblado, 3 rural disperso |
+| **STPERSON_L** | Persons in group quarters (LEA), clase layer | Personas en lugares especiales de alojamiento (LEA), capa de clase |
+| **STPERSON_S** | Persons in households (not in LEA), clase layer. `STPERSON_L` + `STPERSON_S` = `STP27_PERS` | Personas en hogares (fuera de LEA), capa de clase. `STPERSON_L` + `STPERSON_S` = `STP27_PERS` |
+| **PERSONAS_L** | Persons in group quarters (LEA) per unit. 0 in every Bogotá block: DANE publishes LEA residents at clase level | Personas en lugares especiales de alojamiento (LEA) por unidad. 0 en todas las manzanas de Bogotá: el DANE publica a los residentes de LEA a nivel de clase |
 
 ## Method · Método
 

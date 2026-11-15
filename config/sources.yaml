@@ -30,17 +30,45 @@ sources:
     publisher: DANE
     priority: core
     first_used: phase_1
-    used_for: 2018 population per block (STP27_PERS), dwellings, anonymised flag (DATO_ANM)
-    landing_page: https://geoportal.dane.gov.co/descargas/mgn-integrado/
-    download_url: null # TODO(phase_1)
-    format: null # TODO(phase_1)
+    used_for: 2018 population per block (TP27_PERSO) and dwellings (TVIVIENDA); national file, Bogotá kept at ingest
+    # Field descriptions: https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN2018_Integrado_CNPV2018_InstructivoUso.pdf
+    landing_page: https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/
+    download_url: https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN_ANM_MANZANA_(Geopackage).zip
+    format: GeoPackage in zip, EPSG:4326
     vigencia: "2018"
-    licence: null # TODO(phase_1)
+    licence: >-
+      DANE terms of use: use, transformation and analysis authorised, citing
+      "Fuente: Departamento Administrativo Nacional de Estadística: www.dane.gov.co"
+      (https://www.dane.gov.co/index.php/terminos-y-condiciones)
+    access: public
+    sha256: a580e326f3eec0d6a3fe3a7f7f68d280a15cfc5c425e2f956126eddaca90be21
+    checks:
+      - Blocks with dwellings but 0 persons (unexplained; not anonymised, see plan Q2; DATO_ANM is not a flag)
+      - Block total (TP27_PERSO) plus people held at clase level vs the census total (needs dane_mgn_cnpv2018_clase)
+
+  dane_mgn_cnpv2018_clase:
+    title: DANE MGN integrado CNPV 2018, municipio-clase layer
+    publisher: DANE
+    priority: core
+    first_used: phase_1
+    used_for: >-
+      Census total per clase (STP27_PERS), split into group-quarters (STPERSON_L) and
+      household (STPERSON_S) persons; holds the people not shown in any block
+    # Same instructivo as the manzana layer
+    landing_page: https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/
+    download_url: https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN_ANM_MPIOCL_(Geopackage).zip
+    format: GeoPackage in zip, EPSG:4326
+    vigencia: "2018"
+    licence: >-
+      DANE terms of use: use, transformation and analysis authorised, citing
+      "Fuente: Departamento Administrativo Nacional de Estadística: www.dane.gov.co"
+      (https://www.dane.gov.co/index.php/terminos-y-condiciones)
     access: public
     sha256: null
     checks:
-      - Count anonymised blocks (DATO_ANM)
-      - Total vs 7,181,459 censused
+      - Three clases for Bogotá (1 cabecera, 2 centro poblado, 3 rural disperso)
+      - STPERSON_L + STPERSON_S = STP27_PERS in each clase
+      - Household persons (STPERSON_S) per clase vs the block total (TP27_PERSO) per clase
 
   uaecd_lote:
     title: UAECD Lote (cadastral lots)

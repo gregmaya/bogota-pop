@@ -26,11 +26,14 @@ def to_geoparquet(
     *,
     layer: str | None = None,
     member: str | None = None,
+    where: str | None = None,
     assume_crs: str | None = None,
 ) -> dict:
     """Read a vector layer, reproject it to EPSG:9377 and write GeoParquet.
 
     ``layer`` picks a layer in multi-layer files (GeoPackage, File Geodatabase).
+    ``where`` is an SQL filter on source fields, e.g. ``"DPTO_CCDGO = '11'"``;
+    rows that don't match are never loaded.
     ``assume_crs`` is used only when the file declares no CRS; it never overrides one.
     Returns ``rows``, ``crs_in``, ``crs_out`` and ``invalid_geometries``.
     """
@@ -38,7 +41,7 @@ def to_geoparquet(
 
     from bogota_pop.ingest.errors import MissingCRS
 
-    gdf = gpd.read_file(gdal_path(raw, member), layer=layer, engine="pyogrio")
+    gdf = gpd.read_file(gdal_path(raw, member), layer=layer, where=where, engine="pyogrio")
     if gdf.crs is None:
         if assume_crs is None:
             raise MissingCRS(f"{raw.name} declares no CRS; pass assume_crs if it is known")

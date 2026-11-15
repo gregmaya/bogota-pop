@@ -60,6 +60,6 @@ jobs:
       # ADR-0010: the pipeline runs end to end, and a second run has nothing to do
       - name: Pipeline (Snakemake)
         run: |
-          uv run snakemake -s pipeline/Snakefile -c1
-          uv run snakemake -s pipeline/Snakefile -n | tee dry-run.txt
+          uv run snakemake -s pipeline/Snakefile -c1 --config offline=1
+          uv run snakemake -s pipeline/Snakefile -n --config offline=1 | tee dry-run.txt
           grep -q "Nothing to be done" dry-run.txt
