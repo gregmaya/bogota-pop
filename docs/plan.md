@@ -113,7 +113,7 @@ Goal: every source used in v1 downloads by script, lands as GeoParquet in EPSG:9
 | Priority | Dataset | Used for | Check on arrival |
 | --- | --- | --- | --- |
 | Core | [DANE MGN integrado CNPV 2018](https://geoportal.dane.gov.co/descargas/mgn-integrado/), manzana layer | 2018 population per block (TP27\_PERSO), dwellings (TVIVIENDA) | Blocks with dwellings but 0 persons (DATO\_ANM is not a flag); block total plus clase level vs 7,181,469 censused (clase layer) |
-| Core | UAECD Lote, Construcción, Manzana, Uso (Datos Abiertos Bogotá) | Residential area, floors, PH units per lot | Vigencia date; share of lots with residential use; PH vs NPH counts |
+| Core | UAECD Lote, Construcción, Manzana, Uso, Predio (Datos Abiertos Bogotá), monthly cut October 2026 | Residential area, floors, PH units per lot (units come from Predio; Uso has no unit counts) | Vigencia date; share of lots with residential use; PH vs NPH counts (both need UAECD's code dictionary) |
 | Core | [DANE–SDP projections 2005–2035](https://datosabiertos.bogota.gov.co/dataset/proyecciones-y-retroproyecciones-de-poblacion-2005-2035) by UPZ/UPL | Annual control totals | UPZ sum equals city total; 2024 ≈ 7,929,539 |
 | Core | UPZ and UPL boundaries (SDP) | Control geography | Topology; coverage of all blocks |
 | v2 | [SDP licencias, capa geográfica](https://datosabiertos.bogota.gov.co/dataset/licencia-bogota-d-c) | New units since 2018 | Join rate to lot codes |
@@ -131,6 +131,8 @@ Tasks:
 - [ ] Compare the two licence datasets (SDP capa geográfica vs curadurías' licencias ejecutoriadas): what each covers, join rate to lot codes, completion dates; keep one or both for Phase 3
 - [ ] Write a data profile page per source: fields used, row counts, known issues
 - [ ] Request any non-public data (older cadastral vigencias, if not online) through a formal derecho de petición early, since replies can take weeks
+
+**What is online for the cadastre (checked 2026-11-15).** UAECD publishes a monthly cut of each dataset. The 2026 base is the October 2026 cut (`vigencia: "2026-10"` for all five `uaecd_*` sources). Nothing from 2018 is online: the oldest cuts are December 2019 (Predio), March 2020 (Uso) and December 2022 (Lote, Construcción, Manzana). The MVP does not need 2018 cadastre: it spreads 2018 block counts over the 2026 lots and scales to the 2026 projections. 2018 cadastre matters for the back-cast (Phase 4) and the Phase 3 calibration. Until a derecho de petición brings it, the fallback is 2019–2020 weights (Predio and Uso tables joined to today's lots by lot code), plus a same-year spatial test (hide each block's count, rebuild it from its section, compare). The petition is still worth sending, but it no longer blocks anything.
 
 **Exit gate:** `bogota-pop ingest` rebuilds `data/raw` and `data/interim` from nothing, and the profiles answer the three unverified questions from the research (how many blocks are anonymised, whether 2018 cadastre is available, the IDOM/ODUR layer's licence). The 2018 and anonymised block layers are reviewed in Etapas.
 
@@ -270,7 +272,7 @@ Each model stage writes its own PMTiles next to its regular output, so progress 
 | Risk | Effect | Mitigation |
 | --- | --- | --- |
 | MGN↔cadastre block matching is messy | Population lands on the wrong lots | Geometry match with logged thresholds; manual review of the worst 1% |
-| 2018 cadastral vigencia not downloadable | No clean back-cast, weak Phase 3 calibration | Check in Phase 1; request it from UAECD early; fall back to the oldest available vigencia |
+| 2018 cadastral vigencia not downloadable (**confirmed 2026-11-15**: oldest online is Dec 2019) | No clean back-cast, weak Phase 3 calibration | Request it from UAECD; meanwhile back-cast with Dec 2019 Predio and Mar 2020 Uso joined to today's lots by code (Phase 1 note) |
 | Informal growth missing from the cadastre (Usme, Ciudad Bolívar, Bosa edges) | Undercount at the periphery | Flag lots; later test Google Open Buildings 2.5D Temporal as a growth signal |
 | Venezuelan migration (591,462 in Bogotá, Dec 2024) concentrated in rentals and inquilinatos | Spatial bias the raking cannot fix | Document as a limitation; examine EM 2025 by UPL for a correction factor |
 | Census omission (3.1%) not spatially located | Proportional spread may underweight periphery | Treat as a parameter; test alternative spreads in validation |

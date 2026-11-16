@@ -1,5 +1,7 @@
 """Turn a downloaded file into GeoParquet in EPSG:9377 (CLAUDE.md rules 4 and 5).
 
+Tables with no geometry (CSV) become plain Parquet with ``table_to_parquet``.
+
 Field names are kept exactly as published. Geometries are not repaired here:
 invalid ones are counted, logged and left for harmonise to deal with.
 """
@@ -63,6 +65,35 @@ def to_geoparquet(
         "crs_out": TARGET_CRS,
         "invalid_geometries": invalid,
     }
+
+
+def table_to_parquet(
+    raw: Path,
+    out: Path,
+    *,
+    member: str,
+    columns: list[str] | None = None,
+) -> dict:
+    """Read a CSV (UTF-8) from inside a zip and write it as Parquet.
+
+    Every column is read as text, so codes keep their leading zeros (``"001"``).
+    Typing numbers is left to harmonise. ``columns`` keeps only those columns;
+    the others are never loaded. Returns ``rows`` and ``columns_kept``.
+    """
+    import zipfile
+
+    import pandas as pd
+
+    with zipfile.ZipFile(raw) as zf, zf.open(member) as f:
+        df = pd.read_csv(f, dtype=str, usecols=columns, keep_default_na=False, na_values=[""])
+    if columns is not None:
+        df = df[columns]
+
+    tmp = out.with_name(out.name + ".part")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    df.to_parquet(tmp, compression="zstd", index=False)
+    os.replace(tmp, out)
+    return {"rows": len(df), "columns_kept": list(df.columns)}
 
 
 def _crs_name(crs) -> str:

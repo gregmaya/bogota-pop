@@ -46,6 +46,7 @@ Las filas marcadas **to confirm / por confirmar** son términos cuyo significado
 | Term · Término | English | Español |
 | --- | --- | --- |
 | **Lote** | Cadastral lot: the unit the model estimates (kept private, ADR-0006) | Lote catastral: unidad que estima el modelo (privada, ADR-0006) |
+| **CHIP** | **To confirm.** UAECD's identifier for each predio (`PRECHIP` in Predio); its expansion is not yet verified | **Por confirmar.** Identificador de cada predio de la UAECD (`PRECHIP` en Predio); su expansión no está verificada |
 | **Predio** | Cadastral property; a lot can hold many predios (e.g. flats in a building) | Predio; un lote puede tener muchos (p. ej. apartamentos de un edificio) |
 | **PH / NPH** | Propiedad horizontal / no propiedad horizontal: buildings divided into separately owned units (flats) vs single-owner lots | Propiedad horizontal / no propiedad horizontal |
 | **Vigencia** | The year a cadastral record applies to; UAECD publishes a new vigencia each year | Año al que corresponde el registro catastral; la UAECD publica una vigencia cada año |
@@ -68,6 +69,10 @@ Las filas marcadas **to confirm / por confirmar** son términos cuyo significado
 | **STPERSON_L** | Persons in group quarters (LEA), clase layer | Personas en lugares especiales de alojamiento (LEA), capa de clase |
 | **STPERSON_S** | Persons in households (not in LEA), clase layer. `STPERSON_L` + `STPERSON_S` = `STP27_PERS` | Personas en hogares (fuera de LEA), capa de clase. `STPERSON_L` + `STPERSON_S` = `STP27_PERS` |
 | **PERSONAS_L** | Persons in group quarters (LEA) per unit. 0 in every Bogotá block: DANE publishes LEA residents at clase level | Personas en lugares especiales de alojamiento (LEA) por unidad. 0 en todas las manzanas de Bogotá: el DANE publica a los residentes de LEA a nivel de clase |
+| **LOTCODIGO / LOTECODIGO / USOCLOTE / BARMANPRE** | The same 12-character cadastral lot code, named differently in Lote, Construcción, Uso and Predio | El mismo código de lote catastral de 12 caracteres, con nombre distinto en Lote, Construcción, Uso y Predio |
+| **CONNPISOS** | Number of floors of a building (UAECD Construcción) | Número de pisos de una construcción (Construcción de la UAECD) |
+| **USOTUSO** | Use code of a built area in UAECD Uso. **To confirm:** code meanings need UAECD's data dictionary | Código de uso de un área construida en Uso de la UAECD. **Por confirmar:** el significado de los códigos requiere el diccionario de datos de la UAECD |
+| **PREUVIVIEN, PREUSOPH, PRECLASE, PRECDESTIN** | **To confirm.** Predio fields read as dwelling flag, PH flag, class and economic destination; meanings and codes need UAECD's data dictionary | **Por confirmar.** Campos de Predio que parecen indicar vivienda, PH, clase y destino económico; significado y códigos requieren el diccionario de datos de la UAECD |
 
 ## Method · Método
 
