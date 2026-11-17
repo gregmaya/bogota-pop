@@ -131,6 +131,7 @@ Tasks:
 - [ ] Compare the two licence datasets (SDP capa geográfica vs curadurías' licencias ejecutoriadas): what each covers, join rate to lot codes, completion dates; keep one or both for Phase 3
 - [ ] Write a data profile page per source: fields used, row counts, known issues
 - [ ] Request any non-public data (older cadastral vigencias, if not online) through a formal derecho de petición early, since replies can take weeks
+- [ ] Etapas layers for Phase 1 (ADR-0013): PMTiles writer, `config/etapas.yaml`, `etapas.json`, privacy check; first layers MGN blocks, MGN clase, UAECD blocks
 
 **What is online for the cadastre (checked 2026-11-15).** UAECD publishes a monthly cut of each dataset. The 2026 base is the October 2026 cut (`vigencia: "2026-10"` for all five `uaecd_*` sources). Nothing from 2018 is online: the oldest cuts are December 2019 (Predio), March 2020 (Uso) and December 2022 (Lote, Construcción, Manzana). The MVP does not need 2018 cadastre: it spreads 2018 block counts over the 2026 lots and scales to the 2026 projections. 2018 cadastre matters for the back-cast (Phase 4) and the Phase 3 calibration. Until a derecho de petición brings it, the fallback is 2019–2020 weights (Predio and Uso tables joined to today's lots by lot code), plus a same-year spatial test (hide each block's count, rebuild it from its section, compare). The petition is still worth sending, but it no longer blocks anything.
 
@@ -245,11 +246,12 @@ The viewer lives in its own repo (working name `bogota-pop-viewer`) with its own
 
 - [ ] Write V1–V5 as ADRs in the viewer repo
 - [ ] Add a PMTiles + summary JSON step to the model repo's Phase 6 checklist
-- [ ] Create the viewer repo empty alongside the model repo; start building once model Phase 1 ships the 2018 block layer
+- [x] Create the viewer repo empty alongside the model repo
+- [ ] Start building the viewer: generic Etapas mode against a fixture `etapas.json` first, then the real Phase 1 layers (ADR-0013; kickoff prompt in `docs/companion/viewer-kickoff.md`)
 
 ### Etapas mode: every stage on the map
 
-Each model stage writes its own PMTiles next to its regular output, so progress is reviewed on a map, not only in metrics. The viewer gets a second mode, "Etapas", with a layer switcher across them.
+Each model stage writes its own PMTiles next to its regular output, so progress is reviewed on a map, not only in metrics. The viewer gets a second mode, "Etapas", with a layer switcher across them. The real list of layers is `config/etapas.yaml`, and the viewer draws whatever its `etapas.json` lists (ADR-0013); the table below is a summary.
 
 | Stage layer | Produced in | Level | Public |
 | --- | --- | --- | --- |
