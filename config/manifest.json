@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "dane_mgn_cnpv2018_clase": {
+      "url": "https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN_ANM_MPIOCL_(Geopackage).zip",
+      "vigencia": "2018",
+      "downloaded_at": "2026-11-15T19:33:32Z",
+      "sha256": "b7523ca9ba1575be9f7e6bb43eaa99ee640bf6a58b1048d67ec47e1a0f695dbc",
+      "pinned": false,
+      "size_bytes": 110608698,
+      "raw_path": "data/raw/dane_mgn_cnpv2018_clase/2018/MGN_ANM_MPIOCL_(Geopackage).zip",
+      "interim_path": "data/interim/dane_mgn_cnpv2018_clase/2018.parquet",
+      "rows": 3,
+      "crs_in": "EPSG:4326",
+      "crs_out": "EPSG:9377",
+      "invalid_geometries": 0,
+      "suma_STP27_PERS": 7181469,
+      "suma_STPERSON_L": 31929,
+      "suma_STPERSON_S": 7149540,
+      "por_clase": {
+        "1": {
+          "STP27_PERS": 7166249,
+          "STPERSON_L": 31807,
+          "STPERSON_S": 7134442
+        },
+        "2": {
+          "STP27_PERS": 2525,
+          "STPERSON_L": 0,
+          "STPERSON_S": 2525
+        },
+        "3": {
+          "STP27_PERS": 12695,
+          "STPERSON_L": 122,
+          "STPERSON_S": 12573
+        }
+      }
+    },
+    "dane_mgn_cnpv2018_manzana": {
+      "url": "https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN_ANM_MANZANA_(Geopackage).zip",
+      "vigencia": "2018",
+      "downloaded_at": "2026-11-15T19:33:11Z",
+      "sha256": "a580e326f3eec0d6a3fe3a7f7f68d280a15cfc5c425e2f956126eddaca90be21",
+      "pinned": true,
+      "size_bytes": 324258956,
+      "raw_path": "data/raw/dane_mgn_cnpv2018_manzana/2018/MGN_ANM_MANZANA_(Geopackage).zip",
+      "interim_path": "data/interim/dane_mgn_cnpv2018_manzana/2018.parquet",
+      "rows": 43408,
+      "crs_in": "EPSG:4326",
+      "crs_out": "EPSG:9377",
+      "invalid_geometries": 0,
+      "suma_TP27_PERSO": 7136912,
+      "manzanas_sin_personas": 4951,
+      "manzanas_con_viviendas_sin_personas": 254
+    },
+    "uaecd_construccion": {
+      "url": "https://datosabiertos.bogota.gov.co/dataset/397ccbd8-e2c5-4700-b90e-b68d101ab0c5/resource/78d867d2-eee7-4769-8873-583daf8f81be/download/const.shp.10.26.zip",
+      "vigencia": "2026-10",
+      "downloaded_at": "2026-11-16T00:41:44Z",
+      "sha256": "4cc1e18eba30bc04529fc48f178b11fe295d570716bb594f8146ab43bf70b81c",
+      "pinned": false,
+      "size_bytes": 339184738,
+      "raw_path": "data/raw/uaecd_construccion/2026-10/const.shp.10.26.zip",
+      "interim_path": "data/interim/uaecd_construccion/2026-10.parquet",
+      "rows": 2422631,
+      "crs_in": "EPSG:4326",
+      "crs_out": "EPSG:9377",
+      "invalid_geometries": 485,
+      "lotes_con_construccion": 841324,
+      "construcciones_4_pisos_o_mas": 234082
+    },
+    "uaecd_lote": {
+      "url": "https://datosabiertos.bogota.gov.co/dataset/f615a894-3460-4a86-ae9e-fa6e6bf35e77/resource/fee30a3a-81da-4f04-9af8-7cd4067276e7/download/lote.shp.10.26.zip",
+      "vigencia": "2026-10",
+      "downloaded_at": "2026-11-16T00:39:45Z",
+      "sha256": "ceb0b61e8f60dc5012d1b5196852fd6b44972f97b51aae65186dd9a175da155d",
+      "pinned": false,
+      "size_bytes": 209245733,
+      "raw_path": "data/raw/uaecd_lote/2026-10/lote.shp.10.26.zip",
+      "interim_path": "data/interim/uaecd_lote/2026-10.parquet",
+      "rows": 934283,
+      "crs_in": "EPSG:4326",
+      "crs_out": "EPSG:9377",
+      "invalid_geometries": 62,
+      "lotes_codigo_unico": 934257
+    },
+    "uaecd_manzana": {
+      "url": "https://datosabiertos.bogota.gov.co/dataset/21c8667c-3a46-454e-bf79-58c824cabf63/resource/13f66fd3-ad65-442d-a046-bcf857592d66/download/manz.shp.10.26.zip",
+      "vigencia": "2026-10",
+      "downloaded_at": "2026-11-16T00:42:02Z",
+      "sha256": "102869eded32ae595ee31fd44904936fa28ae2b1e2d9c45d977554f091532adb",
+      "pinned": false,
+      "size_bytes": 34379343,
+      "raw_path": "data/raw/uaecd_manzana/2026-10/manz.shp.10.26.zip",
+      "interim_path": "data/interim/uaecd_manzana/2026-10.parquet",
+      "rows": 44529,
+      "crs_in": "EPSG:4326",
+      "crs_out": "EPSG:9377",
+      "invalid_geometries": 8,
+      "manzanas_codigo_unico": 44489
+    },
+    "uaecd_predio": {
+      "url": "https://datosabiertos.bogota.gov.co/dataset/e812efbe-acc3-4e70-9bfc-30fd2134afdd/resource/9fda14de-95bf-46d7-8ae3-155786975fe3/download/tpredio.csv.10.26.zip",
+      "vigencia": "2026-10",
+      "downloaded_at": "2026-11-16T00:40:18Z",
+      "sha256": "fa8b085a29a3c69c0f75ade6fe06bbceccf6a1a86cd99bb5f4a0c57f080fefe0",
+      "pinned": false,
+      "size_bytes": 148233480,
+      "raw_path": "data/raw/uaecd_predio/2026-10/tpredio.csv.10.26.zip",
+      "interim_path": "data/interim/uaecd_predio/2026-10.parquet",
+      "rows": 3873732,
+      "columns_kept": [
+        "BARMANPRE",
+        "PRECHIP",
+        "PRECLASE",
+        "PRECDESTIN",
+        "PRECUSO",
+        "PREAUSO",
+        "PREUSOPH",
+        "PREUSONPH",
+        "PREUVIVIEN",
+        "PREATERRE",
+        "PREACONST",
+        "PREVETUSTZ",
+        "PREVACTUAL"
+      ],
+      "lotes_unicos": 925917,
+      "conteo_PRECLASE": {
+        "N": 1723158,
+        "P": 2150574
+      },
+      "conteo_PREUSOPH": {
+        "(vacío)": 104619,
+        "N": 187729,
+        "S": 3581384
+      },
+      "conteo_PREUVIVIEN": {
+        "(vacío)": 104619,
+        "N": 1232976,
+        "S": 2536137
+      },
+      "conteo_PREVACTUAL": {
+        "0": 7596,
+        "2003": 1,
+        "2006": 111,
+        "2009": 2,
+        "2011": 39,
+        "2022": 2214,
+        "2023": 19247,
+        "2025": 9715,
+        "2026": 3834807
+      }
+    },
+    "uaecd_uso": {
+      "url": "https://datosabiertos.bogota.gov.co/dataset/5f14e849-322a-4de9-9559-945f7f98fc01/resource/1e27f9dd-9010-4554-a8b0-e3db7c379cde/download/tuso.csv.10.256.zip",
+      "vigencia": "2026-10",
+      "downloaded_at": "2026-11-16T00:40:34Z",
+      "sha256": "db8c04f1aa8943b36d1078c1285728aa3c21d552e27120c27066eeacea534b2c",
+      "pinned": false,
+      "size_bytes": 9360105,
+      "raw_path": "data/raw/uaecd_uso/2026-10/tuso.csv.10.256.zip",
+      "interim_path": "data/interim/uaecd_uso/2026-10.parquet",
+      "rows": 1063951,
+      "columns_kept": [
+        "USOCLOTE",
+        "USOTUSO",
+        "USOAREA"
+      ],
+      "lotes_unicos": 840560,
+      "codigos_USOTUSO": 81
+    }
+  }
+}

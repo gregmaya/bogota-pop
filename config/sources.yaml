@@ -30,17 +30,45 @@ sources:
     publisher: DANE
     priority: core
     first_used: phase_1
-    used_for: 2018 population per block (STP27_PERS), dwellings, anonymised flag (DATO_ANM)
-    landing_page: https://geoportal.dane.gov.co/descargas/mgn-integrado/
-    download_url: null # TODO(phase_1)
-    format: null # TODO(phase_1)
+    used_for: 2018 population per block (TP27_PERSO) and dwellings (TVIVIENDA); national file, Bogotá kept at ingest
+    # Field descriptions: https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN2018_Integrado_CNPV2018_InstructivoUso.pdf
+    landing_page: https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/
+    download_url: https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN_ANM_MANZANA_(Geopackage).zip
+    format: GeoPackage in zip, EPSG:4326
     vigencia: "2018"
-    licence: null # TODO(phase_1)
+    licence: >-
+      DANE terms of use: use, transformation and analysis authorised, citing
+      "Fuente: Departamento Administrativo Nacional de Estadística: www.dane.gov.co"
+      (https://www.dane.gov.co/index.php/terminos-y-condiciones)
+    access: public
+    sha256: a580e326f3eec0d6a3fe3a7f7f68d280a15cfc5c425e2f956126eddaca90be21
+    checks:
+      - Blocks with dwellings but 0 persons (unexplained; not anonymised, see plan Q2; DATO_ANM is not a flag)
+      - Block total (TP27_PERSO) plus people held at clase level vs the census total (needs dane_mgn_cnpv2018_clase)
+
+  dane_mgn_cnpv2018_clase:
+    title: DANE MGN integrado CNPV 2018, municipio-clase layer
+    publisher: DANE
+    priority: core
+    first_used: phase_1
+    used_for: >-
+      Census total per clase (STP27_PERS), split into group-quarters (STPERSON_L) and
+      household (STPERSON_S) persons; holds the people not shown in any block
+    # Same instructivo as the manzana layer
+    landing_page: https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/
+    download_url: https://geoportal.dane.gov.co/descargas/mgn-integrado/MGN_ANM_MPIOCL_(Geopackage).zip
+    format: GeoPackage in zip, EPSG:4326
+    vigencia: "2018"
+    licence: >-
+      DANE terms of use: use, transformation and analysis authorised, citing
+      "Fuente: Departamento Administrativo Nacional de Estadística: www.dane.gov.co"
+      (https://www.dane.gov.co/index.php/terminos-y-condiciones)
     access: public
     sha256: null
     checks:
-      - Count anonymised blocks (DATO_ANM)
-      - Total vs 7,181,459 censused
+      - Three clases for Bogotá (1 cabecera, 2 centro poblado, 3 rural disperso)
+      - STPERSON_L + STPERSON_S = STP27_PERS in each clase
+      - Household persons (STPERSON_S) per clase vs the block total (TP27_PERSO) per clase
 
   uaecd_lote:
     title: UAECD Lote (cadastral lots)
@@ -48,16 +76,21 @@ sources:
     priority: core
     first_used: phase_1
     used_for: Lot geometry and codes; the unit the model estimates
-    landing_page: null # TODO(phase_1): Datos Abiertos Bogotá page
-    download_url: null # TODO(phase_1)
-    format: null # TODO(phase_1)
-    vigencia: "2026" # 2018 also needed for the back-cast; confirm availability in Phase 1
-    licence: null # TODO(phase_1)
+    landing_page: https://datosabiertos.bogota.gov.co/dataset/lote
+    download_url: https://datosabiertos.bogota.gov.co/dataset/f615a894-3460-4a86-ae9e-fa6e6bf35e77/resource/fee30a3a-81da-4f04-9af8-7cd4067276e7/download/lote.shp.10.26.zip
+    format: Shapefile in zip, EPSG:4326
+    # Monthly cut, the same for all five uaecd_* sources (a test checks it).
+    # Oldest online: Dec 2022 for Lote, Construcción and Manzana; Mar 2020 Uso; Dec 2019 Predio.
+    vigencia: "2026-10"
+    licence: >-
+      CC BY 4.0 (Creative Commons Attribution 4.0), as stated on the dataset page;
+      credit "Unidad Administrativa Especial de Catastro Distrital (UAECD)"
     access: public
     sha256: null
     checks:
       - Vigencia date
-      - PH vs NPH counts
+      - Lot codes (LOTCODIGO) unique
+      - PH vs NPH counts (with uaecd_predio)
 
   uaecd_construccion:
     title: UAECD Construcción (buildings)
@@ -65,15 +98,20 @@ sources:
     priority: core
     first_used: phase_1
     used_for: Floors and built area per lot (≤3 vs ≥4 floor classes)
-    landing_page: null # TODO(phase_1)
-    download_url: null # TODO(phase_1)
-    format: null # TODO(phase_1)
-    vigencia: "2026" # 2018 also needed for the back-cast
-    licence: null # TODO(phase_1)
+    landing_page: https://datosabiertos.bogota.gov.co/dataset/construccion
+    download_url: https://datosabiertos.bogota.gov.co/dataset/397ccbd8-e2c5-4700-b90e-b68d101ab0c5/resource/78d867d2-eee7-4769-8873-583daf8f81be/download/const.shp.10.26.zip
+    format: Shapefile in zip, EPSG:4326
+    # Monthly cut, the same for all five uaecd_* sources (a test checks it).
+    # Oldest online: Dec 2022 for Lote, Construcción and Manzana; Mar 2020 Uso; Dec 2019 Predio.
+    vigencia: "2026-10"
+    licence: >-
+      CC BY 4.0 (Creative Commons Attribution 4.0), as stated on the dataset page;
+      credit "Unidad Administrativa Especial de Catastro Distrital (UAECD)"
     access: public
     sha256: null
     checks:
       - Vigencia date
+      - Buildings whose LOTECODIGO is not in uaecd_lote
 
   uaecd_manzana:
     title: UAECD Manzana (cadastral blocks)
@@ -81,32 +119,64 @@ sources:
     priority: core
     first_used: phase_1
     used_for: Cadastral blocks, matched to MGN blocks by geometry (CLAUDE.md rule 7)
-    landing_page: null # TODO(phase_1)
-    download_url: null # TODO(phase_1)
-    format: null # TODO(phase_1)
-    vigencia: "2026" # 2018 also needed for the back-cast
-    licence: null # TODO(phase_1)
+    landing_page: https://datosabiertos.bogota.gov.co/dataset/manzana
+    download_url: https://datosabiertos.bogota.gov.co/dataset/21c8667c-3a46-454e-bf79-58c824cabf63/resource/13f66fd3-ad65-442d-a046-bcf857592d66/download/manz.shp.10.26.zip
+    format: Shapefile in zip, EPSG:4326
+    # Monthly cut, the same for all five uaecd_* sources (a test checks it).
+    # Oldest online: Dec 2022 for Lote, Construcción and Manzana; Mar 2020 Uso; Dec 2019 Predio.
+    vigencia: "2026-10"
+    licence: >-
+      CC BY 4.0 (Creative Commons Attribution 4.0), as stated on the dataset page;
+      credit "Unidad Administrativa Especial de Catastro Distrital (UAECD)"
     access: public
     sha256: null
     checks:
       - Vigencia date
+      - Block codes (MANCODIGO) unique
 
   uaecd_uso:
-    title: UAECD Uso (land use per predio)
+    title: UAECD Uso (land use per lot)
     publisher: UAECD
     priority: core
     first_used: phase_1
-    used_for: Residential built area per lot; residential predios (units) in PH lots
+    used_for: Built area per use code per lot; residential built area for NPH lots
     landing_page: https://datosabiertos.bogota.gov.co/dataset/uso
-    download_url: null # TODO(phase_1)
-    format: null # TODO(phase_1)
-    vigencia: "2026" # 2018 also needed for the back-cast
-    licence: null # TODO(phase_1)
+    download_url: https://datosabiertos.bogota.gov.co/dataset/5f14e849-322a-4de9-9559-945f7f98fc01/resource/1e27f9dd-9010-4554-a8b0-e3db7c379cde/download/tuso.csv.10.256.zip
+    format: CSV in zip, UTF-8, no geometry
+    # Monthly cut, the same for all five uaecd_* sources (a test checks it).
+    # Oldest online: Dec 2022 for Lote, Construcción and Manzana; Mar 2020 Uso; Dec 2019 Predio.
+    vigencia: "2026-10"
+    licence: >-
+      CC BY 4.0 (Creative Commons Attribution 4.0), as stated on the dataset page;
+      credit "Unidad Administrativa Especial de Catastro Distrital (UAECD)"
     access: public
     sha256: null
     checks:
       - Vigencia date
-      - Share of lots with residential use
+      - Share of lots with residential use (needs UAECD's code dictionary for USOTUSO)
+      - Lots (USOCLOTE) not in uaecd_lote
+
+  uaecd_predio:
+    title: UAECD Predio (one row per property)
+    publisher: UAECD
+    priority: core
+    first_used: phase_1
+    used_for: Residential units per lot (PH lots); dwelling flag, use and destination codes; only the columns in ingest/uaecd.py are kept
+    landing_page: https://datosabiertos.bogota.gov.co/dataset/predios-bogota
+    download_url: https://datosabiertos.bogota.gov.co/dataset/e812efbe-acc3-4e70-9bfc-30fd2134afdd/resource/9fda14de-95bf-46d7-8ae3-155786975fe3/download/tpredio.csv.10.26.zip
+    format: CSV in zip, UTF-8, no geometry
+    # Monthly cut, the same for all five uaecd_* sources (a test checks it).
+    # Oldest online: Dec 2022 for Lote, Construcción and Manzana; Mar 2020 Uso; Dec 2019 Predio.
+    vigencia: "2026-10"
+    licence: >-
+      CC BY 4.0 (Creative Commons Attribution 4.0), as stated on the dataset page;
+      credit "Unidad Administrativa Especial de Catastro Distrital (UAECD)"
+    access: public
+    sha256: null
+    checks:
+      - Vigencia date (PREVACTUAL, meaning to confirm)
+      - PH vs NPH counts (needs UAECD's code dictionary)
+      - Lots (BARMANPRE) not in uaecd_lote
 
   dane_sdp_proyecciones_poblacion:
     title: DANE–SDP population projections and back-projections 2005–2035, by UPZ/UPL

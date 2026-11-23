@@ -17,6 +17,10 @@ data/*
 *.duckdb.wal
 *.zip
 
+# Working files ingest writes next to config/manifest.json (the manifest itself IS committed).
+config/manifest.json.lock
+config/manifest.json.tmp
+
 # Small, committed test fixtures (one-UPZ sample) are the exception.
 !tests/fixtures/**
 

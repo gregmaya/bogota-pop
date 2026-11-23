@@ -112,8 +112,8 @@ Goal: every source used in v1 downloads by script, lands as GeoParquet in EPSG:9
 
 | Priority | Dataset | Used for | Check on arrival |
 | --- | --- | --- | --- |
-| Core | [DANE MGN integrado CNPV 2018](https://geoportal.dane.gov.co/descargas/mgn-integrado/), manzana layer | 2018 population per block (STP27\_PERS), dwellings, anonymised flag (DATO\_ANM) | Count anonymised blocks; total vs 7,181,459 censused |
-| Core | UAECD Lote, Construcción, Manzana, Uso (Datos Abiertos Bogotá) | Residential area, floors, PH units per lot | Vigencia date; share of lots with residential use; PH vs NPH counts |
+| Core | [DANE MGN integrado CNPV 2018](https://geoportal.dane.gov.co/descargas/mgn-integrado/), manzana layer | 2018 population per block (TP27\_PERSO), dwellings (TVIVIENDA) | Blocks with dwellings but 0 persons (DATO\_ANM is not a flag); block total plus clase level vs 7,181,469 censused (clase layer) |
+| Core | UAECD Lote, Construcción, Manzana, Uso, Predio (Datos Abiertos Bogotá), monthly cut October 2026 | Residential area, floors, PH units per lot (units come from Predio; Uso has no unit counts) | Vigencia date; share of lots with residential use; PH vs NPH counts (both need UAECD's code dictionary) |
 | Core | [DANE–SDP projections 2005–2035](https://datosabiertos.bogota.gov.co/dataset/proyecciones-y-retroproyecciones-de-poblacion-2005-2035) by UPZ/UPL | Annual control totals | UPZ sum equals city total; 2024 ≈ 7,929,539 |
 | Core | UPZ and UPL boundaries (SDP) | Control geography | Topology; coverage of all blocks |
 | v2 | [SDP licencias, capa geográfica](https://datosabiertos.bogota.gov.co/dataset/licencia-bogota-d-c) | New units since 2018 | Join rate to lot codes |
@@ -131,6 +131,9 @@ Tasks:
 - [ ] Compare the two licence datasets (SDP capa geográfica vs curadurías' licencias ejecutoriadas): what each covers, join rate to lot codes, completion dates; keep one or both for Phase 3
 - [ ] Write a data profile page per source: fields used, row counts, known issues
 - [ ] Request any non-public data (older cadastral vigencias, if not online) through a formal derecho de petición early, since replies can take weeks
+- [ ] Etapas layers for Phase 1 (ADR-0013): PMTiles writer, `config/etapas.yaml`, `etapas.json`, privacy check; first layers MGN blocks, MGN clase, UAECD blocks
+
+**What is online for the cadastre (checked 2026-11-15).** UAECD publishes a monthly cut of each dataset. The 2026 base is the October 2026 cut (`vigencia: "2026-10"` for all five `uaecd_*` sources). Nothing from 2018 is online: the oldest cuts are December 2019 (Predio), March 2020 (Uso) and December 2022 (Lote, Construcción, Manzana). The MVP does not need 2018 cadastre: it spreads 2018 block counts over the 2026 lots and scales to the 2026 projections. 2018 cadastre matters for the back-cast (Phase 4) and the Phase 3 calibration. Until a derecho de petición brings it, the fallback is 2019–2020 weights (Predio and Uso tables joined to today's lots by lot code), plus a same-year spatial test (hide each block's count, rebuild it from its section, compare). The petition is still worth sending, but it no longer blocks anything.
 
 **Exit gate:** `bogota-pop ingest` rebuilds `data/raw` and `data/interim` from nothing, and the profiles answer the three unverified questions from the research (how many blocks are anonymised, whether 2018 cadastre is available, the IDOM/ODUR layer's licence). The 2018 and anonymised block layers are reviewed in Etapas.
 
@@ -138,7 +141,7 @@ Tasks:
 
 Goal: a 2026 population estimate per lot, built with CEDS-style logic (Maantay et al., 2007) and controlled to official UPZ totals. This is release `v0.1`.
 
-1. **Resolve anonymised blocks.** Blocks flagged in DATO\_ANM have no own count. Pool their population at the section level and redistribute by cadastral residential weight.
+1. **Resolve anonymised blocks.** Anonymised blocks have no own count: they show 0 persons (DATO\_ANM does not flag them, see the glossary). Pool their population at the section level and redistribute by cadastral residential weight. *To revisit:* the clase layer shows no household people missing from cabecera blocks (open question Q2), so this step may only concern LEA residents and centro poblado.
 2. **Match MGN blocks to cadastral blocks.** Codes differ, so match by geometry: intersect, keep pairs above an overlap threshold (start at 50% of the smaller polygon, tune it), and split 1:n cases by residential area. Log every unmatched block.
 3. **Compute a residential weight per lot.** PH lots use the count of residential predios (units). NPH lots use residential built area from the Uso table, split into the ≤3 and ≥4 floor categories. Mixed-use lots count only the residential share.
 4. **Distribute block population to lots** in proportion to the weight.
@@ -243,16 +246,17 @@ The viewer lives in its own repo (working name `bogota-pop-viewer`) with its own
 
 - [ ] Write V1–V5 as ADRs in the viewer repo
 - [ ] Add a PMTiles + summary JSON step to the model repo's Phase 6 checklist
-- [ ] Create the viewer repo empty alongside the model repo; start building once model Phase 1 ships the 2018 block layer
+- [x] Create the viewer repo empty alongside the model repo
+- [ ] Start building the viewer: generic Etapas mode against a fixture `etapas.json` first, then the real Phase 1 layers (ADR-0013; kickoff prompt in `docs/companion/viewer-kickoff.md`)
 
 ### Etapas mode: every stage on the map
 
-Each model stage writes its own PMTiles next to its regular output, so progress is reviewed on a map, not only in metrics. The viewer gets a second mode, "Etapas", with a layer switcher across them.
+Each model stage writes its own PMTiles next to its regular output, so progress is reviewed on a map, not only in metrics. The viewer gets a second mode, "Etapas", with a layer switcher across them. The real list of layers is `config/etapas.yaml`, and the viewer draws whatever its `etapas.json` lists (ADR-0013); the table below is a summary.
 
 | Stage layer | Produced in | Level | Public |
 | --- | --- | --- | --- |
 | CNPV 2018 blocks as downloaded | Phase 1 | Block | Yes |
-| Blocks anonymised by DANE (DATO\_ANM) | Phase 1 | Block | Yes |
+| Blocks with dwellings but 0 persons (unexplained) | Phase 1 | Block | Yes |
 | MGN↔cadastre match, unmatched blocks highlighted | Phase 2 | Block | Yes |
 | Residential weight per lot | Phase 2 | Lot | No, local only |
 | MVP estimate, 2026 | Phase 2 | Lot (local), block and H3 (public) | Block and H3 only |
@@ -270,7 +274,7 @@ Each model stage writes its own PMTiles next to its regular output, so progress 
 | Risk | Effect | Mitigation |
 | --- | --- | --- |
 | MGN↔cadastre block matching is messy | Population lands on the wrong lots | Geometry match with logged thresholds; manual review of the worst 1% |
-| 2018 cadastral vigencia not downloadable | No clean back-cast, weak Phase 3 calibration | Check in Phase 1; request it from UAECD early; fall back to the oldest available vigencia |
+| 2018 cadastral vigencia not downloadable (**confirmed 2026-11-15**: oldest online is Dec 2019) | No clean back-cast, weak Phase 3 calibration | Request it from UAECD; meanwhile back-cast with Dec 2019 Predio and Mar 2020 Uso joined to today's lots by code (Phase 1 note) |
 | Informal growth missing from the cadastre (Usme, Ciudad Bolívar, Bosa edges) | Undercount at the periphery | Flag lots; later test Google Open Buildings 2.5D Temporal as a growth signal |
 | Venezuelan migration (591,462 in Bogotá, Dec 2024) concentrated in rentals and inquilinatos | Spatial bias the raking cannot fix | Document as a limitation; examine EM 2025 by UPL for a correction factor |
 | Census omission (3.1%) not spatially located | Proportional spread may underweight periphery | Treat as a parameter; test alternative spreads in validation |
@@ -286,6 +290,24 @@ Each model stage writes its own PMTiles next to its regular output, so progress 
 - Random-forest layer (popRF) with GHSL, Open Buildings and night lights as covariates, if Phase 4 shows systematic residuals
 - Administrative data (SISBÉN, utility subscribers) through a convenio with the Distrito
 - DANE's Registro Estadístico Base de Población, if it becomes available below municipality
+
+**Open questions from Phase 1 (raised 2026-11-15, decide before Phase 2 closes):**
+
+- **Q1. Bogotá's edge.** A model that stops at the city limit gives network and accessibility analysis a hard edge: catchments that cross into Soacha, Chía, Cota, Funza, Mosquera or La Calera see no population on the far side. Ideas so far:
+  - The MGN file is already national; only the ingest filter (`DPTO_CCDGO = '11'` in `ingest/dane_mgn.py`) limits it. Turn the filter into a list of municipality codes in config when this is decided.
+  - Outside Bogotá there is no UAECD cadastre. A second, coarser tier could spread census block counts with building footprints (Google Open Buildings, Microsoft) and control to DANE municipal projections. The output would say which tier each cell came from.
+  - This makes the parking-lot item "Extension to the Región Metropolitana" concrete, as a ring of municipalities first.
+- **Q2. People not in any block.** In Bogotá, 7,136,912 people are in census blocks (sum of `TP27_PERSO`) against 7,181,469 censused (sum of `STP27_PERS` in the clase layer). The clase layer shows where the 44,557 difference sits (figures in `config/manifest.json`):
+  - 31,929 live in group quarters (LEA, `STPERSON_L`): 31,807 in the cabecera, 122 in rural disperso.
+  - 12,573 household people live in rural disperso (clase 3), which has no blocks.
+  - 55 household people in centro poblado (clase 2) are missing from its blocks (2,525 against 2,470).
+  - In the cabecera, household people in blocks equal the clase figure exactly (7,134,442). No household people are missing there, so the 254 blocks with dwellings but 0 persons are not hiding anyone. What they are is still open.
+
+  Leaving the LEA residents out is worse than it looks: the control totals include them, so raking would push them into ordinary homes. Ideas so far:
+  - LEA residents: find the lots that hold LEAs (cadastre use codes, OpenStreetMap tags for prisons, barracks, care homes) and spread by capacity. For prisons, INPEC publishes the population of each establishment. Each new source goes into `sources.yaml` first.
+  - Rural disperso is out of scope for v1 (glossary), but its 12,573 people are in the control totals too. Decide whether to place them or take them out of the control.
+  - The 55 centro poblado people: spread over that clase's blocks by dwellings.
+  - Each of these is a method decision for an ADR before it is coded.
 
 ## Sources
 
