@@ -18,6 +18,6 @@ ADRs are immutable once accepted. To change a decision, write a new ADR that sup
 | [0010](0010-orchestration.md) | Orchestration: Snakemake | Accepted | 2026-11-14 |
 | [0011](0011-bilingual-github.md) | Issues, PRs, milestones and releases in English and Spanish | Accepted | 2026-11-14 |
 | [0012](0012-ingest-provenance.md) | Ingest provenance: checksums and manifest | Accepted | 2026-11-15 |
-| [0013](0013-etapas-layer-contract.md) | Etapas layer contract between the model and the viewer | Proposed | 2026-11-17 |
+| [0013](0013-etapas-layer-contract.md) | Etapas layer contract between the data repos and the atlas | Proposed | 2026-11-17, amended 2026-11-23 |
 
 New ADRs copy [template.md](template.md) and take the next number.

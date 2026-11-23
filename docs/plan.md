@@ -228,7 +228,7 @@ Goal: each version is a citable dataset that other projects can pull with one li
 
 ## Parallel track: online viewer (separate repo)
 
-The viewer lives in its own repo (working name `bogota-pop-viewer`) with its own environment, and treats the model repo as a data provider. It never imports the Python package; it only reads published, versioned files.
+The viewer lives in its own repo `bogota-atlas` (formerly `bogota-pop-viewer`) with its own environment, and treats the model repo as a data provider. It never imports the Python package; it only reads published, versioned files.
 
 **Data contract between the two repos.** The model repo's Phase 6 adds one more output per release: vector tiles of block and H3 results, built with tippecanoe into a single PMTiles file, plus a small JSON of UPZ/UPL summaries. The viewer pins a release tag (`v0.1`, `v1.0`) in its config, so a new model release never breaks the live site until the viewer is bumped on purpose.
 
@@ -241,8 +241,8 @@ The viewer lives in its own repo (working name `bogota-pop-viewer`) with its own
 | V1 | Stack | Static site: Vite + MapLibre GL JS + PMTiles |
 | V2 | Where tiles are hosted | GitHub Pages in the viewer repo while the PMTiles file stays well under the 100 MB file limit; Cloudflare R2 if it grows. Range requests and CORS tested in the viewer's Phase 0 |
 | V3 | First version's scope | Block choropleth, H3 toggle and UPZ panel for v0.1; year slider once two releases exist; scenarios after model Phase 5 |
-| V4 | UI language | Spanish only (the model repo's docs stay bilingual per D4) |
-| V5 | Domain | gregmaya.github.io/bogota-pop-viewer |
+| V4 | UI language | ~~Spanish only~~ Superseded 23 Nov 2026: bilingual, Spanish default with an English toggle; layer text comes bilingual from ADR-0013 |
+| V5 | Domain | ~~gregmaya.github.io/bogota-pop-viewer~~ Superseded 23 Nov 2026: `gregmaya.github.io/bogota-atlas`, since the site also shows `bogota-syntax` |
 
 - [ ] Write V1–V5 as ADRs in the viewer repo
 - [ ] Add a PMTiles + summary JSON step to the model repo's Phase 6 checklist
