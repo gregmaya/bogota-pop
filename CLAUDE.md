@@ -81,11 +81,11 @@ Update this block when the real commands differ.
 
 ## Companion repo
 
-The web viewer lives in `gregmaya/bogota-pop-viewer` (local clone: `../bogota-pop-viewer`). It only consumes files this repo publishes (PMTiles, `etapas.json` and UPZ/UPL summary JSON attached to Releases). Don't add viewer code here, and keep the published file names and schemas stable. Changing them is a breaking change and needs a note in the changelog.
+The web viewer lives in `gregmaya/bogota-atlas` (formerly `bogota-pop-viewer`; local clone: `../bogota-atlas`). It also shows layers from `gregmaya/bogota-syntax`. It only consumes files this repo publishes (PMTiles, `etapas.json` and UPZ/UPL summary JSON attached to Releases). Don't add viewer code here, and keep the published file names and schemas stable. Changing them is a breaking change and needs a note in the changelog.
 
 How the two repos move together (ADR-0013):
 
-- **This repo owns the layer list.** `config/etapas.yaml` says which review layers exist, with a Spanish title, what to look for (`review`), level, public or not, fields and a style hint. The pipeline writes one PMTiles per layer plus `etapas.json` into `data/processed/etapas/`.
+- **This repo owns the layer list.** `config/etapas.yaml` says which review layers exist, with bilingual `{es, en}` title, description, method and review text, a `group` (`poblacion`, `red_vial`, `context`), level, public or not, fields and a style hint. The pipeline writes one PMTiles per layer plus `etapas.json` into `data/processed/etapas/`.
 - **The viewer draws whatever `etapas.json` lists**, with no per-layer code. Adding a layer here needs no viewer change; a new `style.kind` does, and is agreed in both repos first.
 - **Every new source or stage gets its review layer** in `etapas.yaml` in the same PR. The "check on arrival" questions become its `review` text.
 - **Privacy:** `lote` and `construccion` layers are always `public: false` (checked in code). The viewer reads them only in local dev mode from `../bogota-pop/data/processed/etapas/`.
